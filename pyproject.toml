@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot_framework"
+version = "0.1.0"
+authors = [
+  { name="ITK Development", email="itk-rpa@mkb.aarhus.dk" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+]
+# HVER VERSION ER LAAST, OG DET ER EN SIKKERHEDSREGEL - IKKE PEDANTERI.
+# Robotten installerer sine afhaengigheder ved HVER koersel. Med ">=" henter den
+# den nyeste udgave paa PyPI i samme oejeblik, den koerer - saa en kapret eller
+# kompromitteret pakke rammer robotmaskinen uden at nogen har besluttet noget.
+# Et "==" betyder, at en ny version er en beslutning, nogen traeffer.
+#
+# cryptography staar IKKE her: den kommer med OpenOrchestrator, som pinner den
+# selv (==45.0.*). To steder at bestemme den version er ét for mange.
+#
+# oomtm staar IKKE her: robotten roerer ikke F2. Den sletter arbejdskopien i
+# KontAKT og pakkerne i DMZ'en - journalen i F2 er netop det, der bliver staaende.
+dependencies = [
+    "OpenOrchestrator == 3.*",
+    "requests == 2.34.2",
+    "Pillow == 10.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pylint",
+  "flake8"
+]
