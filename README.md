@@ -36,13 +36,33 @@ planen og beder om én sag ad gangen; KontAKT tjekker fristen igen ved hvert
 kald, fordi planen er et øjebliksbillede, og nogen kan nå at genåbne en sag
 imens.
 
-## Sager, der ikke er journaliseret, røres ikke
+## Sager, hvor F2 mangler noget, røres ikke
 
-KontAKT nægter at arkivere en sag uden `journalized_at`. F2 er arkivet; KontAKT
-er arbejdskopien. Er journaliseringen ikke bekræftet, findes dokumenterne måske
-ikke noget andet sted, og så er det ikke en oprydning men et tab.
+F2 er arkivet; KontAKT er arbejdskopien. Sletter vi noget her, som aldrig kom
+over i F2, er det ikke oprydning men tab.
 
-De sager rapporteres i loggen og venter på et menneske.
+Journalisering sker **løbende**, så længe sagen er åben. Spørgsmålet er derfor
+ikke *"er sagen journaliseret?"* men **"mangler F2 noget lige nu?"** - og det
+regner KontAKT ud på selve dagen, ud af den plan journaliseringen selv kører på:
+
+| Spærrer arkiveringen |
+|---|
+| et udleveret dokument uden en kopi i F2 |
+| et dokument ændret, siden det kom i F2 |
+| en modtaget eller afsendt mail uden akt |
+| en sag med en noteret synkroniseringsfejl |
+| sagen har intet F2-sagsnummer |
+| F2-planen kunne ikke beregnes (tvivl tæller som mangler) |
+
+Er bare én af dem tilbage, svarer KontAKT 409, og sagen står i `blocked` med en
+begrundelse, robotten skriver i loggen.
+
+Når en sagsbehandler **afslutter** en sag, sætter KontAKT en sidste
+journalisering i kø. Det er sidste chance for at få alt over, og det er dét, der
+gør, at listen over spærrede sager normalt er tom.
+
+`journalized_at` alene åbner altså ikke for arkivering. Den siger kun, hvornår
+F2 sidst blev bekræftet i sync.
 
 ## Spærren
 
